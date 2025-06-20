@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="simple cgpa calculator">
+  <title>CGPA Calculator</title>
+  <link rel="icon" href="img/maths-wallpeppers.jpg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <video autoplay loop muted id="video-background">
+    <source src="img/wallpepper.mp4" type="video/mp4">
+  </video>
+  <div class="container">
+    <h4>Calculate Your CGPA</h4>
+    <div class="box">
+      <div class="displays">
+        <p>CGPA: <span class="cgpa">0.00</span></p>
+        <p>Carry Overs: <span class="carryovers">0</span></p>
+      </div>
+      <form action="#">
+        <div class="form js-first-form">
+          <input type="text" id="grades" placeholder="Grade(A-F)" required>
+          <input type="text" id="unit" inputmode="numeric" placeholder="Course Unit" required>
+        </div>
+        <div class="form js-second-form second-face">
+          <input type="text" class="js-input-level" inputmode="numeric" placeholder="Level">
+        </div>
+        <div class="form js-third-form second-face">
+          <input type="text" class="js-input-grade" placeholder="Prev. CGPA">
+        </div>
+      </form>
+      <div class="buttons">
+        <button class="calculate">
+          <span class="spinner"></span>
+          <span class="text" style="color: white;">Submit</span>
+        </button>
+        <button class="next">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
