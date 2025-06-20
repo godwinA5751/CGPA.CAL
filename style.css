@@ -136,7 +136,7 @@ button{
 }
 @media screen and (max-width: 1024px) {
   .container{
-    height: 25%;
+    height: 30%;
     top: 30%;
   }
   input{
@@ -149,7 +149,7 @@ button{
 }
 @media screen and (max-width: 768px) {
   .container{
-    height: 20%;
+    height: 28%;
     top: 35%;
   }
   p, span{
@@ -163,22 +163,22 @@ button{
 @media screen and (max-width: 480px) {
   .container{
     width: 80%;
-    height: 21%;
+    height: 32%;
   }
 }
 @media screen and (max-width: 420px){
   .container{
-    height: 25%;
+    height: 32%;
   }
 }
 @media screen and (max-width: 390px) {
   .container{
-    height: 24%;
+    height: 30%;
   }
 }
 @media screen and (max-width: 380px) {
   .container{
-    height: 28%;
+    height: 31%;
   }
 }
 @media screen and (max-width: 360px) {
