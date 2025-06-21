@@ -1,10 +1,12 @@
 document.querySelector('.next').addEventListener('click', () =>{
   gradesNext();
-})
+});
  
 let grades = 0;
 let unit = 0;
 let cOvers = 0;
+let cgpa;
+let totalCgpa;
 
 function gradesNext(){
   let grade = document.querySelector('#grades');
@@ -33,7 +35,6 @@ function gradesNext(){
     return Error;
   }
   
-
   const finalCgpa = document.querySelector('.cgpa');
   const carryOvers = document.querySelector('.carryovers');
   finalCgpa.innerHTML = '0.00';
@@ -73,10 +74,10 @@ document.querySelector('.calculate').addEventListener('click', () =>{
   firstForm.style.display = 'none';
   secondForm.style.display = 'flex';
 
-  let cgpa = (grades/unit).toFixed(2);
-  let totalCgpa = ((Number(cgpa) + gradeValue) / 2).toFixed(2);
+  cgpa = (grades/unit).toFixed(2);
+  totalCgpa = ((Number(cgpa) + gradeValue) / 2).toFixed(2);
 
-  if(levelValue > 100){
+  if(levelValue === 200 || levelValue === 300 || levelValue === 400 || levelValue === 500 || levelValue === 600){
     secondForm.style.display = 'none';
     thirdForm.style.display = 'flex';
     if(gradeValue > 0 && gradeValue <= 5.00){
@@ -88,7 +89,6 @@ document.querySelector('.calculate').addEventListener('click', () =>{
         finalCgpa.innerHTML = totalCgpa;
         thirdForm.style.display = 'none';
         firstForm.style.display = 'flex';
-        resetPage();
       }, 3000);
     } else{
       return;
@@ -103,16 +103,30 @@ document.querySelector('.calculate').addEventListener('click', () =>{
       finalCgpa.innerHTML = cgpa;
       secondForm.style.display = 'none';
       firstForm.style.display = 'flex';
-      resetPage();
     }, 3000);
   }
-  function resetPage(){
+});
+
+function resetPage(){
     cgpa = '';
     totalCgpa = 0;
     grades = 0;
     unit = 0;
+    cOvers = 0;
     document.querySelector('.js-input-grade').value = '';
     document.querySelector('.js-input-level').value = '';
+    const finalCgpa = document.querySelector('.cgpa');
+    const carryOvers = document.querySelector('.carryovers');
+    finalCgpa.innerHTML = '0.00';
+    carryOvers.innerHTML = '0';
   }
-});
+
+  const clearButton = document.querySelector('.clear');
+  clearButton.addEventListener('click', () =>{
+    resetPage();
+    clearButton.innerHTML = 'Cleared';
+    setTimeout(() =>{
+      clearButton.innerHTML = 'Clear';
+    }, 3000);
+  });
 

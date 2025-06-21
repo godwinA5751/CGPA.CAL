@@ -42,6 +42,7 @@ body{
   justify-content: space-evenly;
   align-items: center;
   margin-bottom: 5%;
+  width: 100%;
 }
 .second-face{
   display: none;
@@ -79,7 +80,7 @@ button{
   color: #fff;
   transition: all 1s ease-in-out;
 }
-.text, .next{
+.text, .next, .clear{
   font-size: 0.7rem;
 }
 .next{
@@ -89,11 +90,17 @@ button{
   box-shadow: 1px 5px 10px rgb(43, 173, 43);
   background: rgb(89, 89, 196);
 }
+.clear{
+  background: linear-gradient(red, rgb(178, 75, 34));
+}
+.clear:hover{
+  background: red;
+  box-shadow: 1px 2px 10px rgb(178, 75, 34);
+}
 .calculate{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-right: 20%;
   background: linear-gradient(rgb(40, 204, 127), rgb(54, 157, 241));
 }
 .calculate:hover{
@@ -149,7 +156,7 @@ button{
 }
 @media screen and (max-width: 768px) {
   .container{
-    height: 28%;
+    height: 32%;
     top: 35%;
   }
   p, span{
