@@ -9,9 +9,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <video autoplay loop muted id="video-background">
+  <!-- <video autoplay loop muted id="video-background">
     <source src="./img/wallpepper.mp4" type="video/mp4">
-  </video>
+  </video> -->
   <div class="main-box">
     <div class="container">
       <h4>Calculate Your CGPA</h4>
@@ -22,40 +22,44 @@
         </div>
         <form action="#">
           <div class="form js-first-form">
-            <input type="text" id="code" placeholder="Code:">
+            <input type="text" id="code" placeholder="Course:">
             <input type="text" id="grades" placeholder="Grade" required>
             <input type="text" id="unit" inputmode="numeric" placeholder="Unit" required>
           </div>
-          <div class="form js-second-form second-face">
-            <input type="text" class="js-input-level" inputmode="numeric" placeholder="Level">
-          </div>
-          <div class="form js-third-form second-face">
-            <input type="text" class="js-input-grade" placeholder="Prev. CGPA">
-          </div>
+          
         </form>
         <div class="error-message" id="error-message"></div>
         <div class="success-message" id="success-message"></div>
         <div class="buttons">
-          <button class="calculate">
-            <span class="spinner"></span>
-            <span class="text" style="color: white;">Submit</span>
-          </button>
-          <button class="clear">Clear</button>
           <button class="next">Add</button>
         </div>
       </div>
     </div>
     <div class="list">
       <div class="header">
-        <div class="header-list">s/n</div>
+        <div class="header-list">S/N</div>
         <div class="header-list">Course</div>
         <div class="header-list">Grade</div>
         <div class="header-list">Unit</div>
         <div class="header-list"></div>
       </div>
       <div class="course-list"></div>
+      <div class="submit-field">
+        <div class="js-second-form second-face">
+          <input type="text" class="js-input-level" inputmode="numeric" placeholder="Current Level">
+        </div>
+        <div class="js-third-form second-face">
+          <input type="text" class="js-input-grade" placeholder="Prev. CGPA">
+        </div>
+        <button class="clear">Clear</button>
+        <button class="calculate">
+          <span class="spinner"></span>
+          <span class="text" style="color: white;">Submit</span>
+        </button>
+      </div>
+      <div class="error-message message1" id="error-message"></div>
+      <div class="success-message message2" id="success-message"></div>
     </div>
-    
   </div>
   <script src="./main.js"></script>
 </body>

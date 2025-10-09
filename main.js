@@ -16,6 +16,8 @@ const finalCgpa = document.querySelector('.cgpa');
 const carryOvers = document.querySelector('.carryovers');
 const errorMessage = document.getElementById('error-message');
 const successMessage = document.getElementById('success-message');
+const errorMessage2 = document.querySelector('.message1');
+const successMessage2 = document.querySelector('.message2');
 
 // Initialize the course list display
 modifyTodo();
@@ -33,6 +35,8 @@ document.querySelector('.calculate').addEventListener('click', (e) => {
 
 document.querySelector('.clear').addEventListener('click', (e) => {
   e.preventDefault();
+  
+  document.querySelector('.submit-field').style.display = 'none';
   resetPage();
 });
 
@@ -101,7 +105,9 @@ function modifyTodo() {
   if (addToList.length === 0) {
     document.querySelector('.course-list').classList.add('add-style')
     addToListHtml = '<div class="empty-message">No courses added yet</div>';
+    document.querySelector('.submit-field').style.display = 'none';
   } else {
+    document.querySelector('.submit-field').style.display = 'flex';
     document.querySelector('.course-list').classList.remove('add-style');
     addToList.forEach((todoObject, index) => {
       const course = todoObject.courseCode;
@@ -175,12 +181,12 @@ function validateLevelAndGrade() {
   const gradeValue = Number(inputPrevGrade.value);
   
   if (!levelValue || levelValue < 100 || levelValue > 600) {
-    showMessage(errorMessage, 'Please enter a valid level (100-600)');
+    showMessage(errorMessage2, 'Please enter a valid level (100-600)');
     return false;
   }
   
   if (levelValue > 100 && (gradeValue < 0 || gradeValue > 5)) {
-    showMessage(errorMessage, 'Please enter a valid previous CGPA (0.00-5.00)');
+    showMessage(errorMessage2, 'Please enter a valid previous CGPA (0.00-5.00)');
     return false;
   }
   
@@ -196,7 +202,7 @@ function calculateCGPA() {
   calculateGrades();
   
   if (grades === 0 && unit === 0) {
-    showMessage(errorMessage, 'Cannot calculate CGPA with no valid courses');
+    showMessage(errorMessage2, 'Cannot calculate CGPA with no valid courses');
     return;
   }
   
@@ -207,7 +213,6 @@ function calculateCGPA() {
   const gradeValue = Number(inputPrevGrade.value);
   
   // Show level input form for all students
-  firstForm.style.display = 'none';
   secondForm.style.display = 'flex';
   
   // If level is already provided, proceed to next step
@@ -255,7 +260,7 @@ function showResults(resultCgpa) {
     document.querySelector('.js-input-level').value = '';
     document.querySelector('.js-input-grade').value = '';
     
-    showMessage(successMessage, `CGPA calculated: ${resultCgpa}`);
+    showMessage(successMessage2, `CGPA calculated: ${resultCgpa}`);
   }, 2000);
 }
 
