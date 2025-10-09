@@ -5,34 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="simple cgpa calculator">
   <title>CGPA Calculator</title>
+  <!-- Favicon -->
   <link rel="icon" href="img/maths-wallpeppers.jpg">
+  <!-- Main Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Main Container -->
   <div class="main-box">
+    <!-- CGPA Input & Display Section -->
     <div class="container">
       <h4>Calculate Your CGPA</h4>
       <div class="box">
+        <!-- CGPA and Carry Overs Display -->
         <div class="displays">
           <p>CGPA: <span class="cgpa">0.00</span></p>
           <p>Carry Overs: <span class="carryovers">0</span></p>
         </div>
+        <!-- Course Input Form -->
         <form action="#">
           <div class="form js-first-form">
             <input type="text" id="code" placeholder="Course">
             <input type="text" id="grades" placeholder="Grade" required>
             <input type="text" id="unit" inputmode="numeric" placeholder="Unit" required>
           </div>
-          
         </form>
+        <!-- Error and Success Messages for Course Addition -->
         <div class="error-message" id="error-message"></div>
         <div class="success-message" id="success-message"></div>
+        <!-- Add Course Button -->
         <div class="buttons">
           <button class="next">Add</button>
         </div>
       </div>
     </div>
+    <!-- Course List & CGPA Calculation Section -->
     <div class="list">
+      <!-- Table Header -->
       <div class="header">
         <div class="header-list">S/N</div>
         <div class="header-list">Course</div>
@@ -40,24 +49,32 @@
         <div class="header-list">Unit</div>
         <div class="header-list"></div>
       </div>
+      <!-- Dynamic Course List -->
       <div class="course-list"></div>
+      <!-- CGPA Calculation & Reset Controls -->
       <div class="submit-field">
+        <!-- Level Input (Hidden by Default) -->
         <div class="js-second-form second-face">
           <input type="text" class="js-input-level" inputmode="numeric" placeholder="Current Level">
         </div>
+        <!-- Previous CGPA Input (Hidden by Default) -->
         <div class="js-third-form second-face">
           <input type="text" class="js-input-grade" placeholder="Prev. CGPA">
         </div>
+        <!-- Clear All Data Button -->
         <button class="clear">Clear</button>
+        <!-- Calculate CGPA Button -->
         <button class="calculate">
           <span class="spinner"></span>
           <span class="text" style="color: white;">Submit</span>
         </button>
       </div>
+      <!-- Error and Success Messages for CGPA Calculation -->
       <div class="error-message message1" id="error-message"></div>
       <div class="success-message message2" id="success-message"></div>
     </div>
   </div>
+  <!-- Main JavaScript File -->
   <script src="./main.js"></script>
 </body>
 </html>

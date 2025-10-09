@@ -1,14 +1,20 @@
-// Initialize variables
+// ==============================
+// Variable Initialization
+// ==============================
 let grades = 0;
 let unit = 0;
 let cOvers = 0;
 let cgpa;
 let totalCgpa;
 
-// Load courses from localStorage or initialize empty array
+// ==============================
+// Load Data from Local Storage
+// ==============================
 let addToList = JSON.parse(localStorage.getItem('addToList')) || [];
 
-// DOM Elements
+// ==============================
+// DOM Element References
+// ==============================
 const firstForm = document.querySelector('.js-first-form');
 const secondForm = document.querySelector('.js-second-form');
 const thirdForm = document.querySelector('.js-third-form');
@@ -19,28 +25,39 @@ const successMessage = document.getElementById('success-message');
 const errorMessage2 = document.querySelector('.message1');
 const successMessage2 = document.querySelector('.message2');
 
-// Initialize the course list display
+// ==============================
+// Initial UI Setup
+// ==============================
 modifyTodo();
 
+// ==============================
 // Event Listeners
+// ==============================
+
+// Add course to the list
 document.querySelector('.next').addEventListener('click', (e) => {
   e.preventDefault();
   addTodo();
 });
 
+// Calculate CGPA
 document.querySelector('.calculate').addEventListener('click', (e) => {
   e.preventDefault();
   calculateCGPA();
 });
 
+// Clear all data and reset UI
 document.querySelector('.clear').addEventListener('click', (e) => {
   e.preventDefault();
-  
   document.querySelector('.submit-field').style.display = 'none';
   resetPage();
 });
 
-// Functions
+// ==============================
+// Utility Functions
+// ==============================
+
+// Show temporary message to user
 function showMessage(element, message) {
   element.textContent = message;
   element.style.display = 'block';
@@ -49,61 +66,67 @@ function showMessage(element, message) {
   }, 3000);
 }
 
+// Validate course input fields
 function validateCourseInputs() {
   const courseCode = document.querySelector('#code').value.trim();
   const gradeInput = document.querySelector('#grades').value.trim().toUpperCase();
   const courseUnit = document.querySelector('#unit').value.trim();
-  
+
   if (!courseCode || !gradeInput || !courseUnit) {
     showMessage(errorMessage, 'Please fill in all course fields');
     return false;
   }
-  
+
   const validGrades = ['A', 'B', 'C', 'D', 'E', 'F'];
   if (!validGrades.includes(gradeInput)) {
     showMessage(errorMessage, 'Please enter a valid grade (A-F)');
     return false;
   }
-  
+
   if (isNaN(courseUnit) || courseUnit <= 0) {
     showMessage(errorMessage, 'Please enter a valid course unit');
     return false;
   }
-  
+
   return true;
 }
 
+// ==============================
+// Course List Management
+// ==============================
+
+// Add a new course to the list
 function addTodo() {
   if (!validateCourseInputs()) return;
-  
+
   const courseCode = document.querySelector('#code').value.trim();
   const courseGrade = document.querySelector('#grades').value.trim().toUpperCase();
   const courseUnit = document.querySelector('#unit').value.trim();
-  
-  // Add to list
+
   addToList.push({
     courseCode: courseCode,
     courseGrade: courseGrade,
     courseUnit: courseUnit
   });
-  
-  // Clear inputs
+
+  // Clear input fields
   document.querySelector('#code').value = '';
   document.querySelector('#grades').value = '';
   document.querySelector('#unit').value = '';
-  
-  // Update display and storage
+
+  // Update UI and storage
   modifyTodo();
   saveToStorage();
-  
+
   showMessage(successMessage, 'Course added successfully');
 }
 
+// Render the course list and handle row coloring
 function modifyTodo() {
   let addToListHtml = '';
-  
+
   if (addToList.length === 0) {
-    document.querySelector('.course-list').classList.add('add-style')
+    document.querySelector('.course-list').classList.add('add-style');
     addToListHtml = '<div class="empty-message">No courses added yet</div>';
     document.querySelector('.submit-field').style.display = 'none';
   } else {
@@ -125,9 +148,9 @@ function modifyTodo() {
       addToListHtml += html;
     });
   }
-  
+
   document.querySelector('.course-list').innerHTML = addToListHtml;
-  
+
   // Add event listeners to delete buttons
   document.querySelectorAll('.js_delete').forEach((deleteBtn) => {
     deleteBtn.addEventListener('click', (e) => {
@@ -139,21 +162,25 @@ function modifyTodo() {
   });
 }
 
+// Save course list to localStorage
 function saveToStorage() {
   localStorage.setItem('addToList', JSON.stringify(addToList));
 }
 
+// ==============================
+// CGPA Calculation Logic
+// ==============================
+
+// Calculate total grades, units, and carry overs
 function calculateGrades() {
-  // Reset values
   grades = 0;
   unit = 0;
   cOvers = 0;
-  
-  // Calculate from all courses
+
   addToList.forEach(course => {
     const gradeInput = course.courseGrade.toUpperCase();
     const units = parseInt(course.courseUnit);
-    
+
     let gradeValue;
     switch(gradeInput) {
       case 'A': gradeValue = 5; break;
@@ -164,61 +191,63 @@ function calculateGrades() {
       case 'F': gradeValue = 0; cOvers += 1; break;
       default: gradeValue = 0;
     }
-    
+
     grades += gradeValue * units;
     unit += units;
   });
-  
+
   // Update carryovers display
   carryOvers.innerHTML = cOvers;
 }
 
+// Validate level and previous CGPA input
 function validateLevelAndGrade() {
   const inputLevel = document.querySelector('.js-input-level');
   const inputPrevGrade = document.querySelector('.js-input-grade');
-  
+
   const levelValue = Number(inputLevel.value);
   const gradeValue = Number(inputPrevGrade.value);
-  
+
   if (!levelValue || levelValue < 100 || levelValue > 600) {
     showMessage(errorMessage2, 'Please enter a valid level (100-600)');
     return false;
   }
-  
+
   if (levelValue > 100 && (gradeValue < 0 || gradeValue > 5)) {
     showMessage(errorMessage2, 'Please enter a valid previous CGPA (0.00-5.00)');
     return false;
   }
-  
+
   return true;
 }
 
+// Main CGPA calculation handler
 function calculateCGPA() {
   if (addToList.length === 0) {
     showMessage(errorMessage, 'Please add at least one course');
     return;
   }
-  
+
   calculateGrades();
-  
+
   if (grades === 0 && unit === 0) {
     showMessage(errorMessage2, 'Cannot calculate CGPA with no valid courses');
     return;
   }
-  
+
   const inputLevel = document.querySelector('.js-input-level');
   const inputPrevGrade = document.querySelector('.js-input-grade');
-  
+
   const levelValue = Number(inputLevel.value);
   const gradeValue = Number(inputPrevGrade.value);
-  
+
   // Show level input form for all students
   secondForm.style.display = 'flex';
-  
+
   // If level is already provided, proceed to next step
   if (levelValue) {
     if (!validateLevelAndGrade()) return;
-    
+
     if (levelValue === 100) {
       // Calculate for 100 level
       cgpa = (grades/unit).toFixed(2);
@@ -227,7 +256,7 @@ function calculateCGPA() {
       // Show previous CGPA input for higher levels
       secondForm.style.display = 'none';
       thirdForm.style.display = 'flex';
-      
+
       if (gradeValue > 0 && gradeValue <= 5.00) {
         // Calculate for higher levels
         cgpa = (grades/unit).toFixed(2);
@@ -238,66 +267,71 @@ function calculateCGPA() {
   }
 }
 
+// Display CGPA result and reset forms
 function showResults(resultCgpa) {
   const load = document.querySelector('.spinner');
   const submit = document.querySelector('.text');
-  
+
   load.style.display = 'block';
   submit.innerHTML = 'calculating';
-  
+
   setTimeout(() => {
     load.style.display = 'none';
     submit.innerHTML = 'Submit';
     finalCgpa.innerHTML = resultCgpa;
     localStorage.setItem('finalCgpa', resultCgpa); // Save CGPA
     localStorage.setItem('carryOvers', cOvers);    // Save carry overs
-    
+
     // Reset forms
     firstForm.style.display = 'flex';
     secondForm.style.display = 'none';
     thirdForm.style.display = 'none';
-    
+
     document.querySelector('.js-input-level').value = '';
     document.querySelector('.js-input-grade').value = '';
-    
+
     showMessage(successMessage2, `CGPA calculated: ${resultCgpa}`);
   }, 2000);
 }
 
+// ==============================
+// Reset & Restore Logic
+// ==============================
+
+// Reset all data and UI to initial state
 function resetPage() {
-  // Reset variables
   grades = 0;
   unit = 0;
   cOvers = 0;
   cgpa = 0;
   totalCgpa = 0;
-  
+
   // Clear course list
   addToList = [];
   modifyTodo();
   saveToStorage();
-  
+
   // Reset forms
   document.querySelector('#code').value = '';
   document.querySelector('#grades').value = '';
   document.querySelector('#unit').value = '';
   document.querySelector('.js-input-level').value = '';
   document.querySelector('.js-input-grade').value = '';
-  
+
   // Reset displays
   finalCgpa.innerHTML = '0.00';
   carryOvers.innerHTML = '0';
   localStorage.setItem('finalCgpa', '0.00');     // Reset CGPA
   localStorage.setItem('carryOvers', '0');       // Reset carry overs
-  
+
   // Show first form
   firstForm.style.display = 'flex';
   secondForm.style.display = 'none';
   thirdForm.style.display = 'none';
-  
+
   // Show success message
   showMessage(successMessage, 'All data cleared successfully');
-  
+
   // Update clear button text temporarily
   const clearButton = document.querySelector('.clear');
   clearButton.innerHTML = 'Cleared';
@@ -306,7 +340,7 @@ function resetPage() {
   }, 2000);
 }
 
-// On page load, restore CGPA and carry overs if present
+// Restore CGPA and carry overs from localStorage on page load
 if (localStorage.getItem('finalCgpa')) {
   finalCgpa.innerHTML = localStorage.getItem('finalCgpa');
 }
