@@ -103,12 +103,12 @@ function modifyTodo() {
     addToListHtml = '<div class="empty-message">No courses added yet</div>';
   } else {
     document.querySelector('.course-list').classList.remove('add-style');
-    addToList.forEach((todoObject, i, index) => {
+    addToList.forEach((todoObject, index) => {
       const course = todoObject.courseCode;
       const courseGrade = todoObject.courseGrade;
       const courseUnit = todoObject.courseUnit;
       const html = `
-        <div class="table">${i+1}</div>
+        <div class="table">${index+1}</div>
         <div class="table">${course}</div>
         <div class="table">${courseGrade}</div>
         <div class="table">${courseUnit}</div>
