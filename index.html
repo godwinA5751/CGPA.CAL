@@ -6,7 +6,7 @@
   <meta name="description" content="simple cgpa calculator">
   <title>CGPA Calculator</title>
   <!-- Favicon -->
-  <link rel="icon" href="img/maths-wallpeppers.jpg">
+  <link rel="icon" href="img/logo.jpeg">
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
@@ -19,11 +19,12 @@
       <div class="box">
         <!-- CGPA and Carry Overs Display -->
         <div class="displays">
-          <p>CGPA: <span class="cgpa">0.00</span></p>
-          <p>Carry Overs: <span class="carryovers">0</span></p>
+          <p class="display-p">CGPA: <span class="cgpa">0.00</span></p>
+          <p class="display-p">Carry Overs: <span class="carryovers">0</span></p>
         </div>
         <!-- Course Input Form -->
         <form action="#">
+          <p>Enter your course code, grade and unit below</p>
           <div class="form js-first-form">
             <input type="text" id="code" placeholder="Course">
             <input type="text" id="grades" placeholder="Grade" required>
@@ -47,7 +48,7 @@
         <div class="header-list">Course</div>
         <div class="header-list">Grade</div>
         <div class="header-list">Unit</div>
-        <div class="header-list"></div>
+        <div class="header-list">Action</div>
       </div>
       <!-- Dynamic Course List -->
       <div class="course-list"></div>

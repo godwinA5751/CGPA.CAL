@@ -138,7 +138,7 @@ function modifyTodo() {
       const courseUnit = todoObject.courseUnit;
       const html = `
         <div class="table">${index+1}</div>
-        <div class="table">${course}</div>
+        <div class="table">${course.toUpperCase()}</div>
         <div class="table">${courseGrade}</div>
         <div class="table">${courseUnit}</div>
         <button class="delete_btn js_delete" data-index="${index}">
