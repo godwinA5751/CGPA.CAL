@@ -137,7 +137,7 @@ function modifyTodo() {
       const courseGrade = todoObject.courseGrade;
       const courseUnit = todoObject.courseUnit;
       const html = `
-        <div class="table">${index+1}</div>
+        <div class="table">${index + 1}</div>
         <div class="table">${course.toUpperCase()}</div>
         <div class="table">${courseGrade}</div>
         <div class="table">${courseUnit}</div>
@@ -156,8 +156,17 @@ function modifyTodo() {
     deleteBtn.addEventListener('click', (e) => {
       const index = parseInt(e.target.getAttribute('data-index'));
       addToList.splice(index, 1);
+
+      // If this was the last course, reset all calculations and storage
+      if (addToList.length === 0) {
+        resetPage();
+        return;
+      }
+
+      // Otherwise update UI and storage
       modifyTodo();
       saveToStorage();
+      showMessage(successMessage, 'Course removed successfully');
     });
   });
 }
@@ -182,7 +191,7 @@ function calculateGrades() {
     const units = parseInt(course.courseUnit);
 
     let gradeValue;
-    switch(gradeInput) {
+    switch (gradeInput) {
       case 'A': gradeValue = 5; break;
       case 'B': gradeValue = 4; break;
       case 'C': gradeValue = 3; break;
@@ -250,7 +259,7 @@ function calculateCGPA() {
 
     if (levelValue === 100) {
       // Calculate for 100 level
-      cgpa = (grades/unit).toFixed(2);
+      cgpa = (grades / unit).toFixed(2);
       showResults(cgpa);
     } else {
       // Show previous CGPA input for higher levels
@@ -259,7 +268,7 @@ function calculateCGPA() {
 
       if (gradeValue > 0 && gradeValue <= 5.00) {
         // Calculate for higher levels
-        cgpa = (grades/unit).toFixed(2);
+        cgpa = (grades / unit).toFixed(2);
         totalCgpa = ((Number(cgpa) + gradeValue) / 2).toFixed(2);
         showResults(totalCgpa);
       }
@@ -279,8 +288,11 @@ function showResults(resultCgpa) {
     load.style.display = 'none';
     submit.innerHTML = 'Submit';
     finalCgpa.innerHTML = resultCgpa;
-    localStorage.setItem('finalCgpa', resultCgpa); // Save CGPA
-    localStorage.setItem('carryOvers', cOvers);    // Save carry overs
+    localStorage.setItem('finalCgpa', resultCgpa);
+    localStorage.setItem('carryOvers', cOvers);
+
+    // 🔥 UPDATE PROGRESS BAR
+    setCGPA(resultCgpa);
 
     // Reset forms
     firstForm.style.display = 'flex';
@@ -320,6 +332,7 @@ function resetPage() {
 
   // Reset displays
   finalCgpa.innerHTML = '0.00';
+  setCGPA(0);
   carryOvers.innerHTML = '0';
   localStorage.setItem('finalCgpa', '0.00');     // Reset CGPA
   localStorage.setItem('carryOvers', '0');       // Reset carry overs
@@ -341,9 +354,24 @@ function resetPage() {
 }
 
 // Restore CGPA and carry overs from localStorage on page load
-if (localStorage.getItem('finalCgpa')) {
-  finalCgpa.innerHTML = localStorage.getItem('finalCgpa');
-}
+const storedCGPA = localStorage.getItem('finalCgpa') || 0;
+finalCgpa.innerHTML = Number(storedCGPA).toFixed(2);
+setCGPA(storedCGPA);
+
 if (localStorage.getItem('carryOvers')) {
   carryOvers.innerHTML = localStorage.getItem('carryOvers');
+}
+
+function setCGPA(cgpa, maxCGPA = 5) {
+  const value = Math.min(Math.max(Number(cgpa), 0), maxCGPA);
+  const percentage = value / maxCGPA;
+
+  const arcLength = 251; // must match CSS
+  const offset = arcLength * (1 - percentage);
+
+  const arc = document.getElementById("progressArc");
+  const text = document.getElementById("cgpaValue");
+
+  if (arc) arc.style.strokeDashoffset = offset;
+  if (text) text.textContent = value.toFixed(2);
 }
