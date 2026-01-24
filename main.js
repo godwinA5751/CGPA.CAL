@@ -18,7 +18,8 @@ let addToList = JSON.parse(localStorage.getItem('addToList')) || [];
 const firstForm = document.querySelector('.js-first-form');
 const secondForm = document.querySelector('.js-second-form');
 const thirdForm = document.querySelector('.js-third-form');
-const finalCgpa = document.querySelector('.cgpa');
+const cGpa = document.querySelector('.cgpa')
+const finalCgpa = document.querySelector('.ccgpa');
 const carryOvers = document.querySelector('.carryovers');
 const errorMessage = document.getElementById('error-message');
 const successMessage = document.getElementById('success-message');
@@ -207,6 +208,8 @@ function calculateGrades() {
 
   // Update carryovers display
   carryOvers.innerHTML = cOvers;
+  cgpa = unit === 0 ? 0 : (grades / unit).toFixed(2);
+  cGpa.innerHTML = cgpa;
 }
 
 // Validate level and previous CGPA input
@@ -239,7 +242,7 @@ function calculateCGPA() {
 
   calculateGrades();
 
-  if (grades === 0 && unit === 0) {
+  if (unit === 0) {
     showMessage(errorMessage2, 'Cannot calculate CGPA with no valid courses');
     return;
   }
@@ -254,21 +257,21 @@ function calculateCGPA() {
   secondForm.style.display = 'flex';
 
   // If level is already provided, proceed to next step
-  if (levelValue) {
+  if (!levelValue) {
+    showMessage(errorMessage2, 'Please enter your level');
+    return;
+  } else {
     if (!validateLevelAndGrade()) return;
-
     if (levelValue === 100) {
       // Calculate for 100 level
-      cgpa = (grades / unit).toFixed(2);
       showResults(cgpa);
     } else {
       // Show previous CGPA input for higher levels
       secondForm.style.display = 'none';
       thirdForm.style.display = 'flex';
-
+  
       if (gradeValue > 0 && gradeValue <= 5.00) {
         // Calculate for higher levels
-        cgpa = (grades / unit).toFixed(2);
         totalCgpa = ((Number(cgpa) + gradeValue) / 2).toFixed(2);
         showResults(totalCgpa);
       }
@@ -288,6 +291,7 @@ function showResults(resultCgpa) {
     load.style.display = 'none';
     submit.innerHTML = 'Submit';
     finalCgpa.innerHTML = resultCgpa;
+    localStorage.setItem('cGpa', cgpa)
     localStorage.setItem('finalCgpa', resultCgpa);
     localStorage.setItem('carryOvers', cOvers);
 
@@ -332,8 +336,10 @@ function resetPage() {
 
   // Reset displays
   finalCgpa.innerHTML = '0.00';
+  cGpa.innerHTML = '0.00'
   setCGPA(0);
   carryOvers.innerHTML = '0';
+  localStorage.setItem('cGpa', '0.00')
   localStorage.setItem('finalCgpa', '0.00');     // Reset CGPA
   localStorage.setItem('carryOvers', '0');       // Reset carry overs
 
@@ -356,7 +362,11 @@ function resetPage() {
 // Restore CGPA and carry overs from localStorage on page load
 const storedCGPA = localStorage.getItem('finalCgpa') || 0;
 finalCgpa.innerHTML = Number(storedCGPA).toFixed(2);
-setCGPA(storedCGPA);
+setCGPA(Number(storedCGPA));
+
+if (localStorage.getItem('cGpa')) {
+  cGpa.innerHTML = localStorage.getItem('cGpa');
+}
 
 if (localStorage.getItem('carryOvers')) {
   carryOvers.innerHTML = localStorage.getItem('carryOvers');

@@ -201,6 +201,14 @@ button {
   flex-direction: column;
 }
 
+.GP{ 
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  margin-top: 10px;
+}
+
 .display {
   width: 35%;
   padding: 10px;
